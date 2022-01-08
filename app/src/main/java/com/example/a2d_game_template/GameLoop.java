@@ -8,7 +8,7 @@ import java.util.Observer;
 
 public class GameLoop extends Thread{
 
-    private static final double MAX_UPS = 60.0;
+    public static final double MAX_UPS = 60.0;
     private static final double UPS_PERIOD = 1000.0/MAX_UPS;
     private SurfaceHolder surfaceHolder;
     private Game game;

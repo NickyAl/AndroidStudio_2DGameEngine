@@ -39,6 +39,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         this.resolutionHeight = resolutionHeight;
 
         RS = resolutionHeight / 1000.0; //so that we work in a plane with height 1000 units
+        //RS = resolutionWidth if the game is portrait(vertical) display mode
 
         //Get surface holder and add callback
         SurfaceHolder surfaceHolder = getHolder();
@@ -48,7 +49,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize game objects
         player = new Player(getContext(), 500, 500, 30);
-        joystick = new Joystick(300, 900, 100, 50);
+        joystick = new Joystick(180, 820, 100, 50);
 
         setFocusable(true);
     }
@@ -59,11 +60,21 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                player.setPosition(((double) event.getX())/ RS, (double) (event.getY()) / RS); // it is divided by resolution scale because when its drawn it is multiplied by RS
+                if(joystick.isPressed(((double) event.getX()) / RS, ((double) event.getY()) / RS)) {
+                    joystick.setIsPressed(true);
+                }
+                //.setPosition(((double) event.getX())/ RS, ((double) event.getY()) / RS); // it is divided by resolution scale because when its drawn it is multiplied by RS
                 return true;
 
             case MotionEvent.ACTION_MOVE:
-                player.setPosition(((double) event.getX())/ RS, (double) (event.getY()) / RS);
+                if(joystick.getIsPressed()) {
+                    joystick.setActuator(((double) event.getX())/ RS, ((double) event.getY()) / RS);
+                }
+                //player.setPosition(((double) event.getX())/ RS, ((double) event.getY()) / RS);
+                return true;
+            case MotionEvent.ACTION_UP:
+                joystick.setIsPressed(false);
+                joystick.resetActuator();
                 return true;
         }
 
@@ -119,12 +130,12 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         int color = ContextCompat.getColor(getContext(), R.color.magenta);
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " " + RS, 100, 300, paint);
+        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " Resolution scale:" + RS, 100, 300, paint);
     }
 
     public void update() {
         //Update game state
-        player.update();
         joystick.update();
+        player.update(joystick);
     }
 }
