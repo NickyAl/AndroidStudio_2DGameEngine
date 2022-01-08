@@ -3,6 +3,7 @@ package com.example.a2d_game_template;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +17,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
+
         //Set window to fullscreen (will hide status bar)
         //xml solutions makes game crash
         Window window = getWindow();
@@ -25,6 +33,6 @@ public class MainActivity extends AppCompatActivity {
         );
 
         //Set content view to game, so that objects in the Game class can be rendered to the screen
-        setContentView(new Game(this));
+        setContentView(new Game(this, width, height));
     }
 }

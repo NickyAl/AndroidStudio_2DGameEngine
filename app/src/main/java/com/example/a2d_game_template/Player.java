@@ -23,8 +23,8 @@ public class Player {
         paint.setColor(color);
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawCircle((float)positionX, (float)positionY, (float)radius, paint);
+    public void draw(Canvas canvas, double RS) {
+        canvas.drawCircle((float)(positionX * RS), (float)(positionY * RS), (float)(radius * RS), paint);
     }
 
     public void update() {

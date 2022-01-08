@@ -3,11 +3,17 @@ package com.example.a2d_game_template;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 /*
@@ -17,10 +23,22 @@ import androidx.core.content.ContextCompat;
 
 class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
+    private final Joystick joystick;
     private GameLoop gameLoop;
 
-    public Game(Context context) {
+    private int resolutionWidth;
+    private int resolutionHeight;
+
+    final double RS; //Resolution scale
+
+    public Game(Context context, int resolutionWidth, int resolutionHeight) {
         super(context);
+
+        //set resolution
+        this.resolutionWidth = resolutionWidth;
+        this.resolutionHeight = resolutionHeight;
+
+        RS = resolutionHeight / 1000.0; //so that we work in a plane with height 1000 units
 
         //Get surface holder and add callback
         SurfaceHolder surfaceHolder = getHolder();
@@ -28,8 +46,9 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        //Initialize player
+        //Initialize game objects
         player = new Player(getContext(), 500, 500, 30);
+        joystick = new Joystick(300, 900, 100, 50);
 
         setFocusable(true);
     }
@@ -40,11 +59,11 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                player.setPosition((double) event.getX(), (double) event.getY());
+                player.setPosition(((double) event.getX())/ RS, (double) (event.getY()) / RS); // it is divided by resolution scale because when its drawn it is multiplied by RS
                 return true;
 
             case MotionEvent.ACTION_MOVE:
-                player.setPosition((double) event.getX(), (double) event.getY());
+                player.setPosition(((double) event.getX())/ RS, (double) (event.getY()) / RS);
                 return true;
         }
 
@@ -71,8 +90,10 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         drawUPS(canvas);
         drawFPS(canvas);
+        drawResolution(canvas);
 
-        player.draw(canvas);
+        player.draw(canvas, RS);
+        joystick.draw(canvas, RS);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -93,8 +114,17 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS: " + avarageFPS, 100, 200, paint);
     }
 
+    public void drawResolution(Canvas canvas) {
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(getContext(), R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(50);
+        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " " + RS, 100, 300, paint);
+    }
+
     public void update() {
         //Update game state
         player.update();
+        joystick.update();
     }
 }
