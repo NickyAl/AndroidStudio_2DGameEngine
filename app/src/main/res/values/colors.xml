@@ -10,4 +10,5 @@
     <color name="magenta">#FF00FF</color>
     <color name="player">#FFFFFF</color>
     <color name="enemy">#AA0000</color>
+    <color name="spell">#FF8800</color>
 </resources>

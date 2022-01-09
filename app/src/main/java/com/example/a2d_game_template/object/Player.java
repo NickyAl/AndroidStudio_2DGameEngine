@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import com.example.a2d_game_template.GameLoop;
 import com.example.a2d_game_template.Joystick;
 import com.example.a2d_game_template.R;
+import com.example.a2d_game_template.Utils;
 
 /*
 * Player is the main character of the game, which the user controls via a touch joystick.
@@ -40,6 +41,14 @@ public class Player extends Circle {
         //Updates position
         positionX += velocityX;
         positionY += velocityY;
+
+        //Update direction
+        if(velocityX != 0 || velocityY  != 0) {
+            //Normalize velocity to get direction (unit vector of velocity)
+            double distance = Utils.getDistanceBetweenPoints(0, 0, velocityX, velocityY);
+            directionX = velocityX / distance;
+            directionY = velocityY / distance;
+        }
     }
 
     public void setPosition(double positionX, double positionY) {

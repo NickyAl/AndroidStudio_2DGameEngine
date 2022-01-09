@@ -9,9 +9,10 @@ import android.graphics.Canvas;
 public abstract class GameObject {
     protected double positionX;
     protected double positionY;
-
-    protected double velocityX;
-    protected double velocityY;
+    protected double velocityX = 0;
+    protected double velocityY = 0;
+    protected double directionX = 1;
+    protected double directionY = 0;
 
     public GameObject(double positionX, double positionY) {
         this.positionX = positionX;
@@ -35,5 +36,17 @@ public abstract class GameObject {
 
     public double getPositionY() {
         return positionY;
+    }
+
+    protected double getDirectionX() {
+        return directionX;
+    }
+
+    protected double getDirectionY() {
+        return directionY;
+    }
+
+    public boolean isOutsideOfScreen() {
+        return positionX < -100 || positionY < -100 || positionX > 3000 || positionY > 1200;
     }
 }

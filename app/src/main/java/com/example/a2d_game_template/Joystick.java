@@ -41,10 +41,6 @@ public class Joystick {
         innerCirclePaint.setColor(Color.WHITE);
         innerCirclePaint.setStyle(Paint.Style.FILL_AND_STROKE);
     }
-    //Private helpers
-    private double distance(double x1, double y1, double x2, double y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    }
 
     public void draw(Canvas canvas, double RS) {
         //draw outer
@@ -72,7 +68,7 @@ public class Joystick {
     }
 
     public boolean isPressed(double touchPositionX, double touchPositionY) {
-        joystickCenterToTouchDistance = distance(
+        joystickCenterToTouchDistance = Utils.getDistanceBetweenPoints(
                 outerCircleCenterPositionX, outerCircleCenterPositionY,
                 touchPositionX, touchPositionY);
 
@@ -90,7 +86,7 @@ public class Joystick {
     public void setActuator(double touchPositionX, double touchPositionY) {
         double deltaX = touchPositionX - outerCircleCenterPositionX;
         double deltaY = touchPositionY - outerCircleCenterPositionY;
-        double deltaDistance = distance(
+        double deltaDistance = Utils.getDistanceBetweenPoints(
                 touchPositionX, touchPositionY,
                 outerCircleCenterPositionX, outerCircleCenterPositionY);
 
