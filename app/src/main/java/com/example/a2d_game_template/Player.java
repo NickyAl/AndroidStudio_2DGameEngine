@@ -6,35 +6,35 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
-public class Player {
+/*
+* Player is the main character of the game, which the user controls via a touch joystick.
+* The player class is an extension of a Circle, which is an extension of a GameObject
+* */
+
+public class Player extends Circle {
 
     private static final double SPEED_UNITS_PER_SECOND = 800.0; //1 unit = 1px * RS
     private static final double MAX_SPEED = SPEED_UNITS_PER_SECOND / GameLoop.MAX_UPS;
-    private double positionX;
-    private double positionY;
     private double radius;
     private Paint paint;
+    private Joystick joystick;
 
-    private double velocityX;
-    private double velocityY;
+    public Player(Context context, Joystick joystick, double positionX, double positionY, double radius) {
+        super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
 
-    public Player(Context context, double positionX, double positionY, double radius) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.radius = radius;
-
-        paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.player);
-        paint.setColor(color);
+        this.joystick = joystick;
     }
 
-    public void draw(Canvas canvas, double RS) {
+    /*public void draw(Canvas canvas, double RS) {
         canvas.drawCircle((float)(positionX * RS), (float)(positionY * RS), (float)(radius * RS), paint);
-    }
+    }*/
 
-    public void update(Joystick joystick) {
+    public void update() {
+        //Updates velocity based on actuator of joystick
         velocityX = joystick.getActuatorX()*MAX_SPEED;
         velocityY = joystick.getActuatorY()*MAX_SPEED;
+
+        //Updates position
         positionX += velocityX;
         positionY += velocityY;
     }

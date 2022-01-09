@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
     private final Joystick joystick;
+    //private final Enemy enemy;
     private GameLoop gameLoop;
 
     private int resolutionWidth;
@@ -48,8 +49,10 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
 
         //Initialize game objects
-        player = new Player(getContext(), 500, 500, 30);
         joystick = new Joystick(180, 820, 100, 50);
+        player = new Player(getContext(), joystick, 500, 500, 30);
+
+        //enemy = new Enemy();
 
         setFocusable(true);
     }
@@ -136,6 +139,6 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         //Update game state
         joystick.update();
-        player.update(joystick);
+        player.update();
     }
 }
