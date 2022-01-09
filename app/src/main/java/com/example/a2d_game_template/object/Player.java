@@ -1,10 +1,13 @@
-package com.example.a2d_game_template;
+package com.example.a2d_game_template.object;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.a2d_game_template.GameLoop;
+import com.example.a2d_game_template.Joystick;
+import com.example.a2d_game_template.R;
 
 /*
 * Player is the main character of the game, which the user controls via a touch joystick.

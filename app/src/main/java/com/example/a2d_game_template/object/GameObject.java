@@ -1,4 +1,4 @@
-package com.example.a2d_game_template;
+package com.example.a2d_game_template.object;
 
 import android.graphics.Canvas;
 
@@ -18,8 +18,22 @@ public abstract class GameObject {
         this.positionY = positionY;
     }
 
+    protected static double getDistanceBetweenObjects(GameObject obj1, GameObject obj2) {
+        return Math.sqrt(
+                Math.pow(obj2.getPositionX() - obj1.getPositionX(), 2) +
+                Math.pow(obj2.getPositionY() - obj1.getPositionY(), 2)
+        );
+    }
+
     public abstract void draw(Canvas canvas, double RS);
 
     public abstract void update();
 
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
 }

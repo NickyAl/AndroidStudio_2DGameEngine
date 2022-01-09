@@ -1,4 +1,4 @@
-package com.example.a2d_game_template;
+package com.example.a2d_game_template.object;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -3,18 +3,15 @@ package com.example.a2d_game_template;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.os.Build;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+
+import com.example.a2d_game_template.object.Enemy;
+import com.example.a2d_game_template.object.Player;
 
 /*
 * Game maneges all objects in the game and is responsible for
@@ -24,7 +21,7 @@ import androidx.core.content.ContextCompat;
 class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final Player player;
     private final Joystick joystick;
-    //private final Enemy enemy;
+    private final Enemy enemy;
     private GameLoop gameLoop;
 
     private int resolutionWidth;
@@ -52,7 +49,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystick = new Joystick(180, 820, 100, 50);
         player = new Player(getContext(), joystick, 500, 500, 30);
 
-        //enemy = new Enemy();
+        enemy = new Enemy(getContext(), player, 100, 500, 30);
 
         setFocusable(true);
     }
@@ -108,6 +105,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         player.draw(canvas, RS);
         joystick.draw(canvas, RS);
+        enemy.draw(canvas, RS);
     }
 
     public void drawUPS(Canvas canvas) {
@@ -140,5 +138,6 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         //Update game state
         joystick.update();
         player.update();
+        enemy.update();
     }
 }
