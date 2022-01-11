@@ -1,7 +1,6 @@
-package com.example.a2d_game_template.object;
+package com.example.a2d_game_template.gameobject;
 
 import android.content.Context;
-import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 

@@ -1,4 +1,4 @@
-package com.example.a2d_game_template.object;
+package com.example.a2d_game_template.gameobject;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +7,8 @@ import android.graphics.Paint;
 import androidx.core.content.ContextCompat;
 
 import com.example.a2d_game_template.GameLoop;
-import com.example.a2d_game_template.Joystick;
+import com.example.a2d_game_template.gamepanel.HealthBar;
+import com.example.a2d_game_template.gamepanel.Joystick;
 import com.example.a2d_game_template.R;
 import com.example.a2d_game_template.Utils;
 
@@ -62,7 +63,7 @@ public class Player extends Circle {
         this.positionY = positionY;
     }
 
-    public void draw(Canvas canvas, final double RS) {
+    public void draw(Canvas canvas, final float RS) {
         super.draw(canvas, RS);
         healthBar.draw(canvas, RS);
     }

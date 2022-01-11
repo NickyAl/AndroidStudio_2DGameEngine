@@ -1,8 +1,10 @@
-package com.example.a2d_game_template;
+package com.example.a2d_game_template.gamepanel;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+import com.example.a2d_game_template.Utils;
 
 public class Joystick {
 

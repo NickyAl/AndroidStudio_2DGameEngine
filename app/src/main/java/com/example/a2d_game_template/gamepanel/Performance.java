@@ -1,0 +1,58 @@
+package com.example.a2d_game_template.gamepanel;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
+import androidx.core.content.ContextCompat;
+
+import com.example.a2d_game_template.GameLoop;
+import com.example.a2d_game_template.R;
+
+public class Performance {
+
+    private final int FONT_SIZE = 40;
+    private GameLoop gameLoop;
+    private Context context;
+    int resolutionWidth;
+    int resolutionHeight;
+
+    public Performance(Context context, GameLoop gameLoop, int resolutionWidth, int resolutionHeight) {
+        this.context = context;
+        this.gameLoop = gameLoop;
+        this.resolutionWidth = resolutionWidth;
+        this.resolutionHeight = resolutionHeight;
+    }
+
+    public void draw(Canvas canvas, final float RS) {
+        drawUPS(canvas, RS);
+        drawFPS(canvas, RS);
+        drawResolution(canvas, RS);
+    }
+
+    public void drawUPS(Canvas canvas, final float RS) {
+        String averageUPS = Double.toString(gameLoop.getAverageUPS());
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(FONT_SIZE * RS);
+        canvas.drawText("UPS: " + averageUPS, 100 * RS, 100 * RS, paint);
+    }
+
+    public void drawFPS(Canvas canvas, final float RS) {
+        String averageFPS = Double.toString(gameLoop.getAverageFPS());
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(FONT_SIZE * RS);
+        canvas.drawText("FPS: " + averageFPS, 100 * RS, 150 * RS, paint);
+    }
+
+    public void drawResolution(Canvas canvas, final float RS) {
+        Paint paint = new Paint();
+        int color = ContextCompat.getColor(context, R.color.magenta);
+        paint.setColor(color);
+        paint.setTextSize(FONT_SIZE * RS);
+        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " Resolution scale:" + RS, 100 * RS, 200 * RS, paint);
+    }
+}

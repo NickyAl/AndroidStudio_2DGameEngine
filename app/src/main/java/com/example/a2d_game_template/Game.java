@@ -10,10 +10,13 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.example.a2d_game_template.object.Circle;
-import com.example.a2d_game_template.object.Enemy;
-import com.example.a2d_game_template.object.Player;
-import com.example.a2d_game_template.object.Spell;
+import com.example.a2d_game_template.gameobject.Circle;
+import com.example.a2d_game_template.gameobject.Enemy;
+import com.example.a2d_game_template.gamepanel.GameOver;
+import com.example.a2d_game_template.gameobject.Player;
+import com.example.a2d_game_template.gameobject.Spell;
+import com.example.a2d_game_template.gamepanel.Joystick;
+import com.example.a2d_game_template.gamepanel.Performance;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,9 +37,11 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int resolutionWidth;
     private int resolutionHeight;
 
-    final double RS; //Resolution scale
+    final float RS; //Resolution scale
     private int joystickPointerId = 0;
     private int numberOfSpellsToCast = 0;
+    private GameOver gameOver;
+    private Performance performance;
 
     public Game(Context context, int resolutionWidth, int resolutionHeight) {
         super(context);
@@ -45,7 +50,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         this.resolutionWidth = resolutionWidth;
         this.resolutionHeight = resolutionHeight;
 
-        RS = resolutionHeight / 1000.0; //so that we work in a plane with height 1000 units
+        RS = resolutionHeight / 1000.0f; //so that we work in a plane with height 1000 units
         //RS = resolutionWidth if the game is portrait(vertical) display mode
 
         //Get surface holder and add callback
@@ -54,9 +59,13 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        //Initialize game objects
+        //Initialize game panels
+        gameOver = new GameOver(getContext());
         joystick = new Joystick(220, 780, 150, 75);
-        player = new Player(getContext(), joystick, 500, 500, 30);
+        performance = new Performance(context, gameLoop, resolutionWidth, resolutionHeight);
+
+        //Initialize game objects
+        player = new Player(context, joystick, 500, 500, 30);
 
         setFocusable(true);
     }
@@ -118,49 +127,35 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        drawUPS(canvas);
-        drawFPS(canvas);
-        drawResolution(canvas);
 
+        //Draw game objects
         player.draw(canvas, RS);
-        joystick.draw(canvas, RS);
 
         for(Enemy enemy: enemyList) {
             enemy.draw(canvas, RS);
         }
+
         for(Spell spell : spellList) {
             spell.draw(canvas, RS);
         }
 
-    }
+        //Draw game panels
+        performance.draw(canvas, RS);
+        joystick.draw(canvas, RS);
 
-    public void drawUPS(Canvas canvas) {
-        String avarageUPS = Double.toString(gameLoop.getAverageUPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("UPS: " + avarageUPS, 100, 100, paint);
-    }
-
-    public void drawFPS(Canvas canvas) {
-        String avarageFPS = Double.toString(gameLoop.getAverageFPS());
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("FPS: " + avarageFPS, 100, 200, paint);
-    }
-
-    public void drawResolution(Canvas canvas) {
-        Paint paint = new Paint();
-        int color = ContextCompat.getColor(getContext(), R.color.magenta);
-        paint.setColor(color);
-        paint.setTextSize(50);
-        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " Resolution scale:" + RS, 100, 300, paint);
+        // Draw Game Over if the player is dead
+        if (player.getHealthPoints() <= 0) {
+            gameOver.draw(canvas, RS);
+        }
     }
 
     public void update() {
+
+        //Stop updating the game if the player is dead
+        if(player.getHealthPoints() <= 0) {
+            return;
+        }
+
         //Update game state
         joystick.update();
         player.update();

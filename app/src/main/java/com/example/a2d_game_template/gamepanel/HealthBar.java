@@ -1,4 +1,4 @@
-package com.example.a2d_game_template.object;
+package com.example.a2d_game_template.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import androidx.core.content.ContextCompat;
 
 import com.example.a2d_game_template.R;
+import com.example.a2d_game_template.gameobject.Player;
 
 /*
  * HealthBar displays the players health to the screen
@@ -38,7 +39,7 @@ public class HealthBar {
         this.healthPaint.setColor(healthColor);
     }
 
-    public void  draw(Canvas canvas, final double RS) {
+    public void  draw(Canvas canvas, final float RS) {
         float x = (float) player.getPositionX(); //float because drawRect has arguments from type float
         float y = (float) player.getPositionY();
         float distanceToPlayer = 40 * (float) RS;
@@ -51,7 +52,7 @@ public class HealthBar {
         healthBottom = y - distanceToPlayer;
         healthTop = healthBottom - height;
 
-        canvas.drawRect(healthLeft * (float) RS, healthTop * (float) RS, healthRight * (float) RS, healthBottom * (float) RS, healthPaint);
+        canvas.drawRect(healthLeft * RS, healthTop * RS, healthRight * RS, healthBottom * RS, healthPaint);
 
         //Draw border
         float borderLeft = x - width / 2,
@@ -59,6 +60,6 @@ public class HealthBar {
                 borderBottom = y - distanceToPlayer,
                 borderTop = borderBottom - height;
 
-        canvas.drawRect(borderLeft * (float) RS, borderTop * (float) RS, borderRight *(float)  RS , borderBottom * (float) RS, borderPaint);
+        canvas.drawRect(borderLeft * RS, borderTop * RS, borderRight *RS , borderBottom * RS, borderPaint);
     }
 }
