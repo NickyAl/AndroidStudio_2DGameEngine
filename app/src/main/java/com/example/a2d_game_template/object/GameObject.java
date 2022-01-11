@@ -26,7 +26,7 @@ public abstract class GameObject {
         );
     }
 
-    public abstract void draw(Canvas canvas, double RS);
+    public abstract void draw(Canvas canvas, final double RS);
 
     public abstract void update();
 

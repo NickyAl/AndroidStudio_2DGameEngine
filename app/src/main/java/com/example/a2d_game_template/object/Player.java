@@ -1,6 +1,7 @@
 package com.example.a2d_game_template.object;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
@@ -17,16 +18,21 @@ import com.example.a2d_game_template.Utils;
 
 public class Player extends Circle {
 
-    private static final double SPEED_UNITS_PER_SECOND = 800.0; //1 unit = 1px * RS
+    public static final int MAX_HEALTH_POINTS = 10;
+    public static final double SPEED_UNITS_PER_SECOND = 800.0; //1 unit = 1px * RS
     private static final double MAX_SPEED = SPEED_UNITS_PER_SECOND / GameLoop.MAX_UPS;
     private double radius;
     private Paint paint;
     private Joystick joystick;
+    private HealthBar healthBar;
+    private int healthPoints;
 
     public Player(Context context, Joystick joystick, double positionX, double positionY, double radius) {
         super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
 
         this.joystick = joystick;
+        this.healthBar = new HealthBar(context, this);
+        this.healthPoints = MAX_HEALTH_POINTS;
     }
 
     /*public void draw(Canvas canvas, double RS) {
@@ -54,5 +60,18 @@ public class Player extends Circle {
     public void setPosition(double positionX, double positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
+    }
+
+    public void draw(Canvas canvas, final double RS) {
+        super.draw(canvas, RS);
+        healthBar.draw(canvas, RS);
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints >= 0 ? healthPoints : 0;
     }
 }
