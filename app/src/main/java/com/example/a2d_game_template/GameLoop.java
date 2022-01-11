@@ -1,6 +1,7 @@
 package com.example.a2d_game_template;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -32,6 +33,7 @@ public class GameLoop extends Thread{
     }
 
     public void startLoop() {
+        Log.d("GameLoop.java", "startLoop()");
         isRunning = true;
         start();
     }
@@ -39,6 +41,8 @@ public class GameLoop extends Thread{
     @Override
     public void run() {
         super.run();
+
+        Log.d("GameLoop.java", "run()");
 
         //Declare time and cycle count variable
         int updateCount = 0;
@@ -92,7 +96,6 @@ public class GameLoop extends Thread{
                 }
             }
 
-
             //Skip frames to keep up with target UPS
             while(sleepTime < 0 && updateCount < MAX_UPS - 1) {
                 game.update();
@@ -111,6 +114,19 @@ public class GameLoop extends Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
+        }
+    }
+
+    public void stopLoop() {
+        Log.d("GameLoop.java", "stopLoop()");
+
+        isRunning = false;
+        //Wait for thread to join
+        //The run method may not finish on time and we may try to draw on a surface that is destroyed, waiting to join thread prevents that
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

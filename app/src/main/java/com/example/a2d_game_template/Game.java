@@ -3,6 +3,7 @@ package com.example.a2d_game_template;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -110,18 +111,23 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
+    public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        Log.d("Game.java", "surfaceCreated()");
+        //fixing bug that was present in some APIs
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) { //You can only run the same thread object once and when the thread has been terminated you need to create a new thread object
+            gameLoop = new GameLoop(this, holder);            //In other words we create a new game loop each time we reopen the game after it has been minimized
+        }
         gameLoop.startLoop();
     }
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
+        Log.d("Game.java", "surfaceChanged()");
     }
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
-
+        Log.d("Game.java", "surfaceDestroyed()");
     }
 
     @Override
@@ -207,5 +213,9 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+    }
+
+    public void pause() {
+        gameLoop.stopLoop();
     }
 }
