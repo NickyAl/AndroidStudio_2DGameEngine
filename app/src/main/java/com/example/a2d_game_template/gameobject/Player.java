@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.a2d_game_template.GameDisplay;
 import com.example.a2d_game_template.GameLoop;
 import com.example.a2d_game_template.gamepanel.HealthBar;
 import com.example.a2d_game_template.gamepanel.Joystick;
@@ -63,9 +64,9 @@ public class Player extends Circle {
         this.positionY = positionY;
     }
 
-    public void draw(Canvas canvas, final float RS) {
-        super.draw(canvas, RS);
-        healthBar.draw(canvas, RS);
+    public void draw(Canvas canvas, GameDisplay gameDisplay, final double RS) {
+        super.draw(canvas, gameDisplay, RS);
+        healthBar.draw(canvas, gameDisplay, RS);
     }
 
     public int getHealthPoints() {

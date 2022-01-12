@@ -1,8 +1,10 @@
 package com.example.a2d_game_template;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -38,11 +40,12 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     private int resolutionWidth;
     private int resolutionHeight;
 
-    final float RS; //Resolution scale
+    final double RS; //Resolution scale
     private int joystickPointerId = 0;
     private int numberOfSpellsToCast = 0;
     private GameOver gameOver;
     private Performance performance;
+    private GameDisplay gameDisplay;
 
     public Game(Context context, int resolutionWidth, int resolutionHeight) {
         super(context);
@@ -51,7 +54,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         this.resolutionWidth = resolutionWidth;
         this.resolutionHeight = resolutionHeight;
 
-        RS = resolutionHeight / 1000.0f; //so that we work in a plane with height 1000 units
+        RS = resolutionHeight / 1000.0; //so that we work in a plane with height 1000 units
         //RS = resolutionWidth if the game is portrait(vertical) display mode
 
         //Get surface holder and add callback
@@ -67,6 +70,10 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //Initialize game objects
         player = new Player(context, joystick, 500, 500, 30);
+
+        //Initialize game display and center it around the player
+        gameDisplay = new GameDisplay(resolutionWidth, resolutionHeight, player);
+
 
         setFocusable(true);
     }
@@ -135,14 +142,14 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         //Draw game objects
-        player.draw(canvas, RS);
+        player.draw(canvas, gameDisplay, RS);
 
         for(Enemy enemy: enemyList) {
-            enemy.draw(canvas, RS);
+            enemy.draw(canvas, gameDisplay, RS);
         }
 
         for(Spell spell : spellList) {
-            spell.draw(canvas, RS);
+            spell.draw(canvas, gameDisplay, RS);
         }
 
         //Draw game panels
@@ -151,7 +158,7 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         // Draw Game Over if the player is dead
         if (player.getHealthPoints() <= 0) {
-            gameOver.draw(canvas, RS);
+            gameOver.draw(canvas, (float) RS);
         }
     }
 
@@ -213,6 +220,8 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+
+        gameDisplay.update();
     }
 
     public void pause() {

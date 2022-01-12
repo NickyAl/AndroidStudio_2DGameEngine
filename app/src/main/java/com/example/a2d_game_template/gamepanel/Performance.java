@@ -24,35 +24,35 @@ public class Performance {
         this.resolutionHeight = resolutionHeight;
     }
 
-    public void draw(Canvas canvas, final float RS) {
+    public void draw(Canvas canvas, final double RS) {
         drawUPS(canvas, RS);
         drawFPS(canvas, RS);
         drawResolution(canvas, RS);
     }
 
-    public void drawUPS(Canvas canvas, final float RS) {
+    public void drawUPS(Canvas canvas, final double RS) {
         String averageUPS = Double.toString(gameLoop.getAverageUPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
         paint.setColor(color);
-        paint.setTextSize(FONT_SIZE * RS);
-        canvas.drawText("UPS: " + averageUPS, 100 * RS, 100 * RS, paint);
+        paint.setTextSize(FONT_SIZE * (float) RS);
+        canvas.drawText("UPS: " + averageUPS, 100 * (float) RS, 100 * (float) RS, paint);
     }
 
-    public void drawFPS(Canvas canvas, final float RS) {
+    public void drawFPS(Canvas canvas, final double RS) {
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
         paint.setColor(color);
-        paint.setTextSize(FONT_SIZE * RS);
-        canvas.drawText("FPS: " + averageFPS, 100 * RS, 150 * RS, paint);
+        paint.setTextSize(FONT_SIZE * (float) RS);
+        canvas.drawText("FPS: " + averageFPS, 100 * (float) RS, 150 * (float) RS, paint);
     }
 
-    public void drawResolution(Canvas canvas, final float RS) {
+    public void drawResolution(Canvas canvas, final double RS) {
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
         paint.setColor(color);
-        paint.setTextSize(FONT_SIZE * RS);
-        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " Resolution scale:" + RS, 100 * RS, 200 * RS, paint);
+        paint.setTextSize(FONT_SIZE * (float) RS);
+        canvas.drawText("Resolution: " + resolutionWidth + " " + resolutionHeight + " Resolution scale:" + RS, 100 * (float) RS, 200 * (float) RS, paint);
     }
 }

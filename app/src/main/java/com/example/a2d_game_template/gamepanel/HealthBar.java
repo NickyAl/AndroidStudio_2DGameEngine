@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
+import com.example.a2d_game_template.GameDisplay;
 import com.example.a2d_game_template.R;
 import com.example.a2d_game_template.gameobject.Player;
 
@@ -39,7 +40,7 @@ public class HealthBar {
         this.healthPaint.setColor(healthColor);
     }
 
-    public void  draw(Canvas canvas, final float RS) {
+    public void  draw(Canvas canvas, GameDisplay gameDisplay, final double RS) {
         float x = (float) player.getPositionX(); //float because drawRect has arguments from type float
         float y = (float) player.getPositionY();
         float distanceToPlayer = 40 * (float) RS;
@@ -52,7 +53,12 @@ public class HealthBar {
         healthBottom = y - distanceToPlayer;
         healthTop = healthBottom - height;
 
-        canvas.drawRect(healthLeft * RS, healthTop * RS, healthRight * RS, healthBottom * RS, healthPaint);
+        canvas.drawRect(
+                (float) (gameDisplay.gameToDisplayCoordinatesX(healthLeft) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesY(healthTop) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesX(healthRight) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesY(healthBottom) * RS),
+                healthPaint);
 
         //Draw border
         float borderLeft = x - width / 2,
@@ -60,6 +66,11 @@ public class HealthBar {
                 borderBottom = y - distanceToPlayer,
                 borderTop = borderBottom - height;
 
-        canvas.drawRect(borderLeft * RS, borderTop * RS, borderRight *RS , borderBottom * RS, borderPaint);
+        canvas.drawRect(
+                (float) (gameDisplay.gameToDisplayCoordinatesX(borderLeft) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesY(borderTop) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesX(borderRight) * RS),
+                (float) (gameDisplay.gameToDisplayCoordinatesY(borderBottom) * RS),
+                borderPaint);
     }
 }
